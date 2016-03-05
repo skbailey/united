@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  .col-md-12
+    h1.page-header New Assistance Request
+    form
+      .form-group
+        input.form-control(name="first_name" type="text" placeholder="First Name")
+        span.pull-right.help-block required
+
+      .form-group
+        input.form-control(name="last_name" type="text" placeholder="Last Name")
+        span.pull-right.help-block required
+
+      .form-group
+        input.form-control(name="email" type="email" placeholder="Email")
+        span.pull-right.help-block required
+
+      .form-group
+        select.form-control
+          option Select Service Type
+          option Benefits
+          option Employment
+        span.pull-right.help-block required
+
+      .form-group
+        textarea.form-control(rows="3" placeholder="Assistance request description")
+        span.pull-right.help-block required
+
+      .form-group
+        .checkbox
+          label
+            input(type="checkbox" value="")
+            | I hereby accept the terms of service for THE NETWORK and the Privacy Policy
+
+      .form-group
+        input.btn.btn-default.pull-right(type="submit")
