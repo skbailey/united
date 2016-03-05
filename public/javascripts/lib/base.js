@@ -1,4 +1,9 @@
 jQuery(function($){
-  console.log("DOM Loaded!")
-  var assistanceForm = new window.App.Views.AssistanceForm({el: 'form.assistance'});
+  var serviceTypes = new window.App.Collections.ServiceTypes();
+  var assistanceForm = new window.App.Views.AssistanceForm({
+    el: 'form.assistance',
+    collection: serviceTypes
+  });
+
+  serviceTypes.fetch();
 });

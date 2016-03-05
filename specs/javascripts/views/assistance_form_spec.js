@@ -1,12 +1,25 @@
 describe("Assistance Form", function(){
-  var assistanceForm;
+  var assistanceForm, serviceTypes;
+  var serviceTypeID = "employment";
+  var serviceTypeDisplayName = "Employment";
 
   beforeEach(function(){
-    setFixtures('<form class="assistance"></form>');
-    assistanceForm = new window.App.Views.AssistanceForm({el: 'form.assistance'});
+    var models = [{
+      id: serviceTypeID, 
+      display_name: serviceTypeDisplayName
+    }];
+    serviceTypes = new window.App.Collections.ServiceTypes(models);
   });
 
-  it("has a collection of service types", function(){
-    expect(assistanceForm.serviceTypes).toEqual(jasmine.any(window.App.Collections.ServiceTypes));
+  it('populates the service-type select dropdown with options', function(){
+    setFixtures('<form class="assistance"><select class="service-types"></select></form>');
+    assistanceForm = new window.App.Views.AssistanceForm({
+      el: "form.assistance",
+      collection: serviceTypes
+    });
+    assistanceForm.populateServiceTypes();
+
+    expect($('select.service-types option')).toHaveAttr('value', serviceTypeID);
+    expect($('select.service-types option')).toHaveText(serviceTypeDisplayName);
   });
 });

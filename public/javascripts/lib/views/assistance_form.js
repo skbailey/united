@@ -4,13 +4,18 @@
 
   var AssistanceForm = Backbone.View.extend({
     initialize: function(){
-      this.serviceTypes = new window.App.Collections.ServiceTypes()
-      this.serviceTypes.on("sync", this.loadServiceTypes, this);
-      this.serviceTypes.fetch();
+      this.collection.on("sync", this.populateServiceTypes, this);
     },
 
-    loadServiceTypes: function(){
-      console.log("Load the serviceTypes!", this.serviceTypes);
+    populateServiceTypes: function(){
+      var selectBox = this.$('select.service-types');
+      var serviceTypeOptionTemplate = _.template('<option value="<%= model.id %>">' + 
+        '<%= model.get("display_name") %>' +
+        '</option>');
+
+      this.collection.each(function(serviceType){
+        selectBox.append(serviceTypeOptionTemplate({model: serviceType}));
+      });
     }
   });
 
