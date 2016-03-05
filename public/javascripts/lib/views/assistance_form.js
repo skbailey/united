@@ -3,6 +3,10 @@
   /* A Backbone view that controls interactions with the form */
 
   var AssistanceForm = Backbone.View.extend({
+    events: {
+      "submit" : "onSubmit"
+    },
+
     initialize: function(){
       this.collection.on("sync", this.populateServiceTypes, this);
     },
@@ -16,6 +20,15 @@
       this.collection.each(function(serviceType){
         selectBox.append(serviceTypeOptionTemplate({model: serviceType}));
       });
+    },
+
+    // Events
+    onSubmit: function(evt){
+      var formParams;
+
+      evt.preventDefault();
+      formParams = this.$el.formParams();
+      console.log('formData', formParams);
     }
   });
 

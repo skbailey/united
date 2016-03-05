@@ -16,6 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'public/javascripts/vendor/jquery.js',
+      'public/javascripts/vendor/jquery.formparams.js',
       'public/javascripts/vendor/underscore.js',
       'public/javascripts/vendor/backbone.js',
       'public/javascripts/vendor/bootstrap.js',

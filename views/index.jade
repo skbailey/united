@@ -5,30 +5,30 @@ block content
     h1.page-header New Assistance Request
     form.assistance
       .form-group
-        input.form-control(name="first_name" type="text" placeholder="First Name")
+        input.form-control(name="contact[first_name]" type="text" placeholder="First Name")
         span.pull-right.help-block required
 
       .form-group
-        input.form-control(name="last_name" type="text" placeholder="Last Name")
+        input.form-control(name="contact[last_name]" type="text" placeholder="Last Name")
         span.pull-right.help-block required
 
       .form-group
-        input.form-control(name="email" type="email" placeholder="Email")
+        input.form-control(name="contact[email]" type="email" placeholder="Email")
         span.pull-right.help-block required
 
       .form-group
-        select.service-types.form-control
+        select.service-types.form-control(name="service_type")
           option Select Service Type
         span.pull-right.help-block required
 
       .form-group
-        textarea.form-control(rows="3" placeholder="Assistance request description")
+        textarea.form-control(name="description" rows="3" placeholder="Assistance request description")
         span.pull-right.help-block required
 
       .form-group
         .checkbox
           label
-            input(type="checkbox" value="")
+            input(name="terms_of_service" type="checkbox" value="")
             | I hereby accept the terms of service for THE NETWORK and the Privacy Policy
 
       .form-group
