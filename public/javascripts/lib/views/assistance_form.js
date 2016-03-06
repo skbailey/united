@@ -14,8 +14,32 @@
       this.listenTo(this.model, "error", this.displayConnectionError);
       this.listenTo(this.model, "invalid", this.displayValidationError);
       this.listenTo(this.collection, "sync", this.populateServiceTypes)
+
+      // Components
+      this.alert = this.$('.alert');
+      this.submitBtn = this.$('.submit input');
     },
 
+    // Form Management Methods
+    enableForm: function(){
+      this.submitBtn.removeAttr('disabled');
+    },
+
+    disableForm: function(){
+      this.submitBtn.attr('disabled', 'disabled');
+      this.cleanupForm();
+    },
+
+    cleanupForm: function() {
+      var $currentErrors = this.$('.has-error');
+      $currentErrors.removeClass('has-error');
+
+      this.alert
+        .removeClass('alert-danger alert-success')
+        .addClass('hidden');
+    },
+
+    // Model & Collection Event Callbacks
     populateServiceTypes: function(collection){
       var selectBox = this.$('select.service-types');
       var serviceTypeOptionTemplate = _.template('<option value="<%= model.id %>">' + 
@@ -28,7 +52,7 @@
     },
 
     displaySubmissionSuccess: function(model, response, options) {
-      this.$('.alert')
+      this.alert
         .addClass('alert-success')
         .removeClass('hidden')
         .text(response.message);
@@ -37,7 +61,7 @@
     },
 
     displayConnectionError: function(model, response, options) {
-      this.$('.alert')
+      this.alert
         .addClass('alert-danger')
         .removeClass('hidden')
         .text(response.responseJSON.message);
@@ -47,45 +71,17 @@
 
     displayValidationError: function(model, error, options){
       var $errorGroup = this.$('.' + error.id);
+      var $errorDisplay = $errorGroup.find('.error-message');
+      $errorDisplay.text(error.message);
       $errorGroup.addClass('has-error');
-
-      if (error.message === 'Please enter a valid email address') {
-        $errorGroup.find('input').attr({ placeholder: error.message }).val("");
-      }
 
       this.enableForm();
     },
 
-    enableForm: function(){
-      this.submitBtn = this.submitBtn || this.$('.submit input');
-      this.submitBtn.removeAttr('disabled');
-    },
-
-    disableForm: function(){
-      this.submitBtn = this.submitBtn || this.$('.submit input');
-      this.submitBtn
-        .attr('disabled', 'disabled');
-
-      this.cleanupForm();
-    },
-
-    cleanupForm: function() {
-      var $currentErrors = this.$('.has-error');
-      this.alert = this.alert || this.$('.alert');
-
-      this.alert
-        .removeClass('alert-danger alert-success')
-        .addClass('hidden');
-
-      $currentErrors.removeClass('has-error');
-    },
-
-    // Events
+    // DOM Event Callbacks
     onSubmit: function(evt){
-      var formParams, form = evt.target;
-
-      evt.preventDefault();
-      formParams = this.$el.formParams();
+      var form = evt.target;
+      var formParams = this.$el.formParams();
 
       this.disableForm();
       this.model.save({ assistance_request: formParams }, {
@@ -93,6 +89,8 @@
           form.reset();
         }
       });
+
+      return false;
     }
   });
 
