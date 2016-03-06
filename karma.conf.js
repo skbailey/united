@@ -20,6 +20,7 @@ module.exports = function(config) {
       'public/javascripts/vendor/underscore.js',
       'public/javascripts/vendor/backbone.js',
       'public/javascripts/vendor/bootstrap.js',
+      'public/javascripts/lib/models/*.js',
       'public/javascripts/lib/collections/*.js',
       'public/javascripts/lib/views/*.js',
       'specs/support/*.js',

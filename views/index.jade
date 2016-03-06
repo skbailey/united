@@ -4,32 +4,33 @@ block content
   .col-md-12
     h1.page-header New Assistance Request
     form.assistance
-      .form-group
+      .alert.hidden
+      .form-group.first_name
         input.form-control(name="contact[first_name]" type="text" placeholder="First Name")
         span.pull-right.help-block required
 
-      .form-group
+      .form-group.last_name
         input.form-control(name="contact[last_name]" type="text" placeholder="Last Name")
         span.pull-right.help-block required
 
-      .form-group
-        input.form-control(name="contact[email]" type="email" placeholder="Email")
+      .form-group.email
+        input.form-control(name="contact[email]" type="text" placeholder="Email")
         span.pull-right.help-block required
 
-      .form-group
+      .form-group.service_type
         select.service-types.form-control(name="service_type")
-          option Select Service Type
+          option(value="") Select Service Type
         span.pull-right.help-block required
 
-      .form-group
+      .form-group.description
         textarea.form-control(name="description" rows="3" placeholder="Assistance request description")
         span.pull-right.help-block required
 
-      .form-group
+      .form-group.terms_of_service
         .checkbox
           label
             input(name="terms_of_service" type="checkbox" value="")
             | I hereby accept the terms of service for THE NETWORK and the Privacy Policy
 
-      .form-group
+      .form-group.submit
         input.btn.btn-default.pull-right(type="submit")

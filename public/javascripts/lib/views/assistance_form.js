@@ -8,10 +8,15 @@
     },
 
     initialize: function(){
-      this.collection.on("sync", this.populateServiceTypes, this);
+      this.model = new window.App.Models.AssistanceRequest();
+
+      this.listenTo(this.model, "sync", this.displaySubmissionSuccess);
+      this.listenTo(this.model, "error", this.displayConnectionError);
+      this.listenTo(this.model, "invalid", this.displayValidationError);
+      this.listenTo(this.collection, "sync", this.populateServiceTypes)
     },
 
-    populateServiceTypes: function(){
+    populateServiceTypes: function(collection){
       var selectBox = this.$('select.service-types');
       var serviceTypeOptionTemplate = _.template('<option value="<%= model.id %>">' + 
         '<%= model.get("display_name") %>' +
@@ -22,13 +27,72 @@
       });
     },
 
+    displaySubmissionSuccess: function(model, response, options) {
+      this.$('.alert')
+        .addClass('alert-success')
+        .removeClass('hidden')
+        .text(response.message);
+
+      this.enableForm();
+    },
+
+    displayConnectionError: function(model, response, options) {
+      this.$('.alert')
+        .addClass('alert-danger')
+        .removeClass('hidden')
+        .text(response.responseJSON.message);
+
+      this.enableForm();
+    },
+
+    displayValidationError: function(model, error, options){
+      var $errorGroup = this.$('.' + error.id);
+      $errorGroup.addClass('has-error');
+
+      if (error.message === 'Please enter a valid email address') {
+        $errorGroup.find('input').attr({ placeholder: error.message }).val("");
+      }
+
+      this.enableForm();
+    },
+
+    enableForm: function(){
+      this.submitBtn = this.submitBtn || this.$('.submit input');
+      this.submitBtn.removeAttr('disabled');
+    },
+
+    disableForm: function(){
+      this.submitBtn = this.submitBtn || this.$('.submit input');
+      this.submitBtn
+        .attr('disabled', 'disabled');
+
+      this.cleanupForm();
+    },
+
+    cleanupForm: function() {
+      var $currentErrors = this.$('.has-error');
+      this.alert = this.alert || this.$('.alert');
+
+      this.alert
+        .removeClass('alert-danger alert-success')
+        .addClass('hidden');
+
+      $currentErrors.removeClass('has-error');
+    },
+
     // Events
     onSubmit: function(evt){
-      var formParams;
+      var formParams, form = evt.target;
 
       evt.preventDefault();
       formParams = this.$el.formParams();
-      console.log('formData', formParams);
+
+      this.disableForm();
+      this.model.save({ assistance_request: formParams }, {
+        success: function(){
+          form.reset();
+        }
+      });
     }
   });
 
